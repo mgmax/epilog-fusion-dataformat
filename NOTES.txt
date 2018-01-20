@@ -1,0 +1,15 @@
+
+eView Camera protocol:
+- UDP Broadcast for IP and Port of camera unit
+- TCP something to fetch image
+  (-> see eview-camera-process-pcap-capture.py for a first rough attempt at reverse engineering)
+- OpenCV for color conversion, stitching, marker detection etc.
+
+
+Epilog Fusion printer language, compared to Legend:
+- Autofocus command is different
+- Frequency: \x1b&y50R (Fusion, now in percent)  compared to Helix: \x1b&y2480R  (in 0-5000 range)
+- cutting paths: The Job Manager (not the Normal windows printer driver) converts (approximates) polylines to Bezier curves, using the appropriate HPGL command, so that the motion is faster and less jerky.
+- new "PowerComp" / "SpeedComp" settings
+ 
+The guys at Epilog are quite helpful regarding questions about the commands.
