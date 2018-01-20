@@ -1,9 +1,12 @@
 
 eView Camera protocol:
+In the lasercutter, there are two USB cameras built into the lid (and one into the laser head). They are connected to an ODROID C1 board. 
 - UDP Broadcast for IP and Port of camera unit
 - TCP something to fetch image
   (-> see eview-camera-process-pcap-capture.py for a first rough attempt at reverse engineering)
 - OpenCV for color conversion, stitching, marker detection etc.
+
+To use this for precise alignment with VisiCam, you will have to add some physical markers besides the laser bed, and also implement something to support two cameras in VisiCam (two VisiCam instances for left/right half and then merge??)
 
 
 Epilog Fusion printer language, compared to Legend:
@@ -12,4 +15,39 @@ Epilog Fusion printer language, compared to Legend:
 - cutting paths: The Job Manager (not the Normal windows printer driver) converts (approximates) polylines to Bezier curves, using the appropriate HPGL command, so that the motion is faster and less jerky.
 - new "PowerComp" / "SpeedComp" settings
  
-The guys at Epilog are quite helpful regarding questions about the commands.
+## PCL
+\x1b is the PCL escape character (ASCII ESC) 
+
+\x1b&y0E
+autofocus offset
+
+\x1b&y-1A
+autofocus thickness
+
+\x1b&y50R (Frequency now from 1...100, instead of 1...5000) 
+
+\x1b&z0L
+0 = CO2, 1 = fiber?
+
+
+## HPGL:
+
+> WO0;
+autofocus offset * 1/1000 inch
+
+WF-1;
+autofocus thickness * 1/1000 inch
+or -1 for no focus
+
+XR50;
+vector frequency, 1...100 percent
+
+XS1;
+speed compensation 0/1
+
+XP0;
+power compenstaion 0/1
+
+
+ 
+The guys at Epilog are quite helpful regarding questions about the commands. (Feel free to contact me for specific info, I don't want to include their email addresses in public files)
